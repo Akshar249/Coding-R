@@ -1,0 +1,120 @@
+---
+title: "C18_lecture"
+author: "John Doe"
+date: "3/21/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE, eval = TRUE)
+```
+
+# Handling Date & Time - `lubridate` Package
+
+-   Hands-on Assignment starts from line 25.
+-   Have enough time and run the codes using RStudio before doing Hands-on Assignment
+-   When you want to run code, please use `ctrl + Enter` instead of a mouse
+
+# Run these three lines first
+
+```{r}
+if (!require('tidyverse')) install.packages('tidyverse'); library('tidyverse')
+if (!require('lubridate')) install.packages('lubridate'); library('lubridate')
+if (!require('nycflights13')) install.packages('nycflights13'); library('nycflights13')
+```
+
+# Current date and time
+
+```{r}
+# only year and date
+today()
+
+#including time
+now()
+```
+
+# Parsing date from strings
+
+```{r}
+# identify the order of year, month, and day in  your  data
+# then arrange “y”, “m”, and “d” in the same order
+
+mdy("March 21st 2022")
+
+dmy("31 March 2022")
+```
+
+# Parsing time from strings
+
+```{r}
+mdy_hms("March/21/2021 11:53:32")
+```
+
+# `flights` data preview
+
+```{r}
+colnames(flights)
+```
+
+# Creating a new column using `make_datetime()` function
+
+```{r}
+flights %>%
+  select(year, month, day, hour, minute) %>%
+  mutate(departure = make_datetime(year, month, day, hour, minute))
+```
+
+# Visualize the count of `departure` column
+
+```{r}
+flights %>%
+  select(year, month, day, hour, minute) %>%
+  mutate(departure = make_datetime(year, month, day, hour, minute)) %>%
+  ggplot(aes(departure)) +
+  geom_freqpoly(binwidth = 86400) # 86400 seconds = 1 day
+```
+
+# Pulling out a part of date
+
+```{r}
+thatday <- mdy("April 21 1919")
+
+year(thatday)
+
+month(thatday)
+
+month(thatday, label = TRUE)
+
+day(thatday)
+
+wday(thatday)
+
+wday(thatday, label = TRUE, abbr = FALSE)
+```
+
+# Visualize the count of `departure` column in terms of day
+
+```{r}
+flights %>%
+  select(year, month, day, hour, minute) %>%
+  mutate(departure = make_datetime(year, month, day, hour, minute)) %>%
+  mutate(w_departure = wday(departure, label = TRUE)) %>%
+  ggplot(aes(x = w_departure)) + 
+  geom_bar()
+```
+
+# Time difference as seconds, days, and years
+
+```{r}
+today() - ymd("2010/04/14") #Time difference as days
+
+as.duration(today() - ymd("2010/04/14")) #as seconds and years
+```
+
+# Convert seconds to period using `seconds_to_period()`
+
+```{r}
+diff <- as.duration(ymd_hms("2022/03/18 08:13:33") - ymd_hms("2022/03/14 11:43:32"))
+
+seconds_to_period(diff)
+```

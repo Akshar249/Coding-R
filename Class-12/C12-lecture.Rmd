@@ -1,0 +1,141 @@
+---
+title: "C12_lecture"
+author: "John Doe"
+date: "2/21/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE, eval = TRUE)
+```
+
+# Data importing and Tidy data using `tidyverse` package
+
+### 
+
+-   Hands-on Assignment starts from line 28.
+-   Have enough time and run the codes using RStudio before doing Hands-on Assignment
+-   When you want to run code, please use `ctrl + Enter` instead of a mouse
+
+### 
+
+# Run this line first
+
+```{r}
+if (!require('tidyverse')) install.packages('tidyverse'); library('tidyverse') 
+```
+
+# To read a csv file
+```{r}
+heights <- read_csv("C:/Users/jlim13/Desktop/heights.csv") #change the path to the file
+```
+
+```{r}
+View(heights)
+```
+
+# To write a csv file
+```{r}
+numbers <- read_csv("1,2,3\n4,5,6", col_names = c("x", "y", "z"))
+```
+
+```{r}
+head(numbers)
+```
+
+```{r}
+write_csv(numbers, "C:/Users/jlim13/Desktop/numbers.csv") #change path to the folder and file name 
+```
+
+# To read Excel file (.xls and .xlsx) - readxl()
+
+```{r}
+library(readxl)
+```
+```{r}
+height2 <- read_excel("C:/Users/jlim13/Desktop/heights2.xlsx") #change the path to the file
+```
+
+```{r}
+head(height2)
+```
+
+# Organizing data 
+```{r}
+#Run this code and see all the columns and rows in detail.
+#This table represents the number of TB (Tuberculosis) cases and population per country per year are represented in a tidy format.
+table1 
+```
+
+```{r}
+#Run this code and see `type` column
+table2 
+#Why untidy? - Each variable (cases or population) must have its own column.
+```
+
+```{r}
+#Run this code and see `rate` column
+table3
+#Why untidy? - Each value (745 or 19987071) must have its own cell.
+```
+
+```{r}
+#Run this code and see `1999` and `2000` column for the number of case
+table4a 
+#Why untidy? - Year as a variable does not exist.
+```
+```{r}
+#Run this code and see `1999` and `2000` column for the number of population
+table4b
+#Why untidy? - Year as a variable does not exist.
+#Each observation must have its own row. TB cases and population in 1999 and 2000 do not exist in one row.
+#Each value must have its own cell. Again, 1999 is a value for Year.
+```
+
+#Pivoting using `pivot_longer()` function - step1
+```{r}
+#1st parameter: The set of columns whose names are values, not variables
+#2nd parameter: The name of the variable to move the column names to. Here it is `year`.
+#3rd parameter: The name of the variable to move the column values to. Here it’s `cases`.
+
+table4a %>% 
+    pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases")
+
+```
+
+#Pivoting using `pivot_longer()` function - step2
+```{r}
+#This step is for making `population` from `table4b`
+
+table4b %>% 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "population")
+```
+
+#Pivoting using `pivot_longer()` function - step3
+```{r}
+#To combine two tables into one
+
+tidy4a <- table4a %>% 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases")
+
+tidy4b <- table4b %>% 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "population")
+
+left_join(tidy4a, tidy4b)
+```
+
+#Pivoting using `pivot_wider()` function
+```{r}
+table2
+```
+
+```{r}
+#1st parameter: The column to take variable names from. Here, it’s `type`.
+#2nd parameter: The column to take values from. Here it’s `count`.
+table2 %>%
+    pivot_wider(names_from = type, values_from = count)
+```
+
+#To sum up,
+#pivot_longer() makes wide tables narrower and longer, and
+#pivot_wider() makes long tables shorter and wider.

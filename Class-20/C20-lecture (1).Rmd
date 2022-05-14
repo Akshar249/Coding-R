@@ -1,0 +1,161 @@
+---
+title: "C20_lecture"
+author: "John Doe"
+date: "3/28/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE, eval = TRUE)
+```
+
+# if statement and function 
+
+-   Hands-on Assignment starts from line 18.
+-   Have enough time and run the codes using RStudio before doing Hands-on Assignment
+-   When you want to run code, please use `ctrl + Enter` instead of a mouse
+
+# if Statement - basic syntax
+```{r}
+if (condition) {
+  expression
+}
+```
+
+# if Statement - basic syntax
+```{r}
+#write it down again
+
+
+
+
+```
+
+# if Statement
+```{r}
+cat <- 5
+
+if (cat > 2) {
+  print("cat is greater than 2")
+}
+
+#print function will work
+```
+
+# if Statement
+```{r}
+cat <- 1
+
+if (cat > 2) {
+  print("cat is greater than 2")
+}
+
+#print function won't work
+```
+
+# else Statement - basic syntax
+```{r}
+if (condition1) {
+  expression1
+} else {
+  expression2
+}
+```
+
+# else Statement - basic syntax
+```{r}
+# write it down again
+
+
+
+
+```
+
+```{r}
+cat <- 1
+
+if (cat == 2) {
+  print("cat is equal to 2")
+} else {
+  print("cat is NOT equal to 2")
+}
+
+#else condition is TRUE
+```
+
+# else if Statement - basic syntax
+```{r}
+if (condition1) {
+  expression1
+} else if (condition2) {
+  expression2
+} else {
+  expression3
+}
+```
+
+# else if Statement - basic syntax
+```{r}
+# write it down again
+
+
+
+
+
+
+```
+
+# else if Statement
+```{r}
+cat <- 4
+
+if (cat == 2) {
+  print("cat is equal to 2")
+} else if (cat == 3) {
+  print("cat is equal to three")
+} else {
+  print("cat is NOT equal to 2 or three")
+}
+```
+
+# Function - basic syntax
+```{r}
+# A function in R is created using the function() directive
+
+#creation
+function_name_you_want <- function(argument) {
+    # Do something
+}
+
+#usage
+function_name_you_want()(argument)
+```
+
+# Function with if statemnt 
+```{r}
+findtwo <- function(x) {
+  if (x == 2)
+    print("The input is two")
+}
+```
+
+```{r}
+findtwo(2)
+```
+
+# Function with multiple tasks
+```{r}
+pricefunc <- function(a) {
+  print(mean(a))
+  print(min(a))
+  b <- mean(a) + min(a)
+  print(b)
+  plot(a, main = "My Price Function")
+}
+```
+
+```{r}
+apple <- c(42, 2321, 372, 698)
+
+pricefunc(apple)
+```

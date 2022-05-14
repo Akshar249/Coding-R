@@ -1,0 +1,159 @@
+---
+title: "C16_lecture"
+author: "John Doe"
+date: "3/14/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE, eval = TRUE)
+```
+
+# Handling Text with `stringr` Package
+
+### 
+
+-   Hands-on Assignment starts from line 29.
+-   Have enough time and run the codes using RStudio before doing Hands-on Assignment
+-   When you want to run code, please use `ctrl + Enter` instead of a mouse
+
+### 
+
+# Run these two lines first
+
+```{r}
+if (!require('tidyverse')) install.packages('tidyverse'); library('tidyverse') 
+if (!require('stringr')) install.packages('stringr'); library('stringr') 
+```
+
+# Create strings using quotation marks
+
+```{r}
+#double quotation marks
+
+yolo <- "You only live once, but if you do it right, once is enough"
+```
+
+```{r}
+print(yolo)
+```
+
+```{r}
+#single quotation marks
+
+single <- 'To put a "quote" inside a string, use single quotes'
+```
+
+```{r}
+#data type check
+
+class(single)
+
+typeof(single)
+```
+
+# Multiple strings using `c()`
+
+```{r}
+c("You", "only", "live", "once")
+```
+
+# Count string length using `str_length()`
+
+```{r}
+str_length(yolo)
+```
+
+# String combination with `str_c()`
+
+```{r}
+str_c("You", "only", "live", "once")
+```
+
+# String combination with a `sep` operator
+
+```{r}
+str_c("You", "only", "live", "once", sep = ", ")
+```
+
+# From multiple strings to a single string
+
+```{r}
+str_c("You", "only", "live", "once", collapse = ", ")
+```
+
+# String slicing using `str_sub()`
+
+```{r}
+capital <- c("YOU", "ONLY", "LIVE", "ONCE")
+
+str_sub(capital, 1, 3)
+```
+
+# String modification using `str_to_lower()`
+
+```{r}
+str_sub(capital, 1, 1) <- str_to_lower(str_sub(capital, 1, 1))
+
+print(capital)
+```
+
+# String modification using `str_to_upper()`
+
+```{r}
+small <- c("you", "only", "live", "once")
+
+str_sub(small, 1, 2) <- str_to_upper(str_sub(small, 1, 2))
+
+print(small)
+```
+
+# String sort from A to Z using `str_sort()`
+
+```{r}
+food <- c("egg", "snack", "apple")
+
+str_sort(food)
+```
+
+# Concatenate a series of strings using `paste` & `paste0`
+
+```{r}
+# First example
+
+time <- paste("Time", "is", "money")
+
+print(time)
+```
+
+```{r}
+#instead of two lines of the previous chunk (First example)
+
+(time <- paste("Time", "is", "money"))
+```
+
+```{r}
+# `sep` parameter
+
+paste("Time", "is", "money", sep = "_")
+```
+
+```{r}
+# `sep` parameter
+
+paste("Time", "is", "money", sep = "")
+```
+
+```{r}
+# Difference between `collapse` and `sep` parameter 
+
+paste("1st", "2nd", "3rd", collapse = ", ")
+
+paste("1st", "2nd", "3rd", sep = ", ")
+```
+
+```{r}
+# `paste0` function 
+
+paste0("Time", "is", "money")
+```

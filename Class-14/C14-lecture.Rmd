@@ -1,0 +1,181 @@
+---
+title: "C14_lecture"
+author: "John Doe"
+date: "2/21/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE, eval = TRUE)
+```
+
+# Data importing and Tidy data using `tidyverse` package (2)
+
+-   Have enough time and run the codes using RStudio before doing Hands-on Assignment
+-   When you want to run code, please use `ctrl + Enter` instead of a mouse
+
+# Run this line first
+
+```{r}
+if (!require('tidyverse')) install.packages('tidyverse'); library('tidyverse') 
+```
+
+# To read a csv file
+
+```{r}
+grade <- read_csv("C:/Users/jlim13/Desktop/student.csv") 
+#replace the path with yours
+```
+
+```{r}
+head(grade, 3)
+```
+
+# To write a csv file
+
+```{r}
+numbers <- read_csv("1,2,3\n4,5,6", col_names = c("x", "y", "z"))
+```
+
+```{r}
+head(numbers)
+```
+
+```{r}
+write_csv(numbers, "C:/Users/jlim13/Desktop/numbers.csv") #replace the path with yours
+```
+
+# To read Excel file (.xls and .xlsx) - readxl()
+
+```{r}
+library(readxl)
+```
+
+```{r}
+population <- read_excel("C:/Users/jlim13/Desktop/people.xlsx") #replace the path with yours
+```
+
+```{r}
+tail(population)
+```
+
+# seperate() function
+
+```{r}
+#Run this code and see `rate` column
+#Why untidy? - Each value (745 or 19987071) must have its own cell
+
+table3
+```
+
+```{r}
+table3 %>% 
+  separate(rate, into = c("cases", "population")) 
+
+# split values
+```
+
+```{r}
+table3 %>% 
+  separate(rate, into = c("cases", "population"), sep = "/") 
+
+#identical outcome with `sep =` argument
+```
+
+```{r}
+table3 %>% 
+  separate(rate, into = c("cases", "population"), convert = TRUE) 
+
+#from `char` to `int`
+
+```
+
+```{r}
+table3 %>% 
+  separate(year, into = c("century", "year"), sep = 2) 
+
+#split the value of `year` column into `century` and `year` by two digits 
+```
+
+# unite() function - from multiple columns to a single column
+
+```{r}
+table5 
+
+#`century` and `year` need to be united. 
+```
+
+```{r}
+table5 %>% 
+  unite(new, century, year) #see underscores in `new` column
+```
+
+```{r}
+table5 %>% 
+  unite(new, century, year, sep = "")
+#without underscore in `new` column
+```
+
+# Dealing with explicit or implicit NA values
+
+-   Explicit NA value: flagged with NA
+-   Implicit NA value: simply not present in the data
+
+```{r}
+#run this code to make a `profit` variable
+
+profit <- tibble(
+  year   = c(2015, 2015, 2015, 2015, 2016, 2016, 2016),
+  qtr    = c(   1,    2,    3,    4,    2,    3,    4),
+  return = c(1.88, 0.59, 0.35,   NA, 0.92, 0.17, 2.66)
+)
+```
+
+```{r}
+#run this code and find one explicit NA value and one implicit NA value
+
+profit 
+```
+
+# From implicit NA values to explicit ones using `pivot_wider()`
+
+```{r}
+profit %>% 
+  pivot_wider(names_from = year, values_from = return)
+
+#see the explict NA values
+```
+
+# From implicit NA values to explicit ones using `complete()`
+
+```{r}
+profit %>% 
+  complete(year, qtr)
+
+#see the explicit NA values
+```
+
+#From explicit NA values to implicit ones using `values_drop_na = TRUE`
+
+```{r}
+profit %>% 
+  pivot_wider(names_from = year, values_from = return) %>% 
+  pivot_longer(
+    cols = c(`2015`, `2016`), 
+    names_to = "year", 
+    values_to = "return", 
+    values_drop_na = TRUE
+  )
+
+# see the change from 7 rows to 6 rows
+```
+
+# To fill in the NA value with the most recent non-missing value using `fill()`
+
+```{r}
+profit %>% 
+  complete(year, qtr) %>%
+  fill(return) 
+
+#find `0.35` instead of `NA` in `return` column
+```

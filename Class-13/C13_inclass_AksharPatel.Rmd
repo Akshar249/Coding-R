@@ -1,0 +1,92 @@
+---
+title: "Inclass Assignment (5)"
+author: "Akshar Patel"
+date: "3/16/2022"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE, eval = TRUE)
+```
+
+- If you don't know the answer, leave it blank.
+- If you are caught cheating, you will be given minus 50 points.  
+
+### Run this chunk first
+```{r}
+if (!require('tidyverse')) install.packages('tidyverse'); library('tidyverse') 
+```
+
+Q1. Update the author name with your name in YAML part above. 
+
+Q2. A line of code to import a `productivity.csv` file from your `Desktop` folder and assign it as a `productivity` variable.
+```{r}
+productivity <- read_csv("C:/Users/Akshar/Desktop/Inclass_Assigment_5/productivity.csv")
+```
+
+Q3. What is the number of rows and columns of `productivity` variable? 
+```{r}
+#Rows: 1192
+#Columns: 6
+```
+
+Run this chunk for Q4
+```{r}
+ages <- data.frame(Name = c("Jane", "William", "Ben", "Jaewan"),
+                   Age = c(31, 23, 12, 42))
+```
+
+Q4. A line of code to save `ages` dataframe to your `Desktop` folder as `ages.csv`. You don't need to submit `ages.csv` to Canvas.
+```{r}
+write_csv(ages, "C:/Users/Akshar/Desktop/Inclass_Assigment_5/ages.csv")
+```
+
+Run this code for Q5.
+```{r}
+if (!require('readxl')) install.packages('readxl'); library('readxl') 
+```
+
+Q5. A line of code to import a `scale.xlsx` file and store it as a `scale` variable from your `Desktop` folder.
+```{r}
+scale <- read_excel("C:/Users/Akshar/Desktop/Inclass_Assigment_5/scale.xlsx")
+```
+
+Q6. Run the following code and answer the reason why it is untidy.
+```{r}
+table2
+
+#Explanation:  each and every variable must have its own column
+```
+
+Q7. Run the following code and answer the reason why it is untidy.
+```{r}
+table3
+
+#Explanation: Each and every value must have its own cell
+```
+
+Q8. Run the following code and answer the reason why it is untidy.
+```{r}
+table4a
+
+#Explanation: year variable does not exist
+```
+
+Q9. Two lines of code that pivots `table4a` as a tidy and longer dataset with the following information. 
+- The name of the variable to move the column names to: `year`
+- The name of the variable to move the column values to: `cases`
+```{r}
+table4a %>%
+  pivot_longer(c('1999', '2000'), names_to = "year", values_to = "cases")
+```
+
+Q10. Two lines of code that pivots `table2` as a tidy and wider dataset with the following information. 
+- The column to take variable names from: `type`
+- The column to take values from: `count`
+```{r}
+table2 %>%
+  pivot_wider(names_from  = "type", values_from = "count")
+
+```
